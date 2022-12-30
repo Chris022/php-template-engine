@@ -1,0 +1,2 @@
+Template ::= HTMLCode | PhpCode | PhpEcho
+
