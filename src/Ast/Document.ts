@@ -20,3 +20,5 @@ export interface PHPEcho{
     end:        number,
     value:      ExpressionStatement
 }
+
+export type Template = PHPCode | PHPEcho | HTMLCode
