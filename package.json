@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Chris022/php-template-engine-v2/issues"
   },
-  "homepage": "https://github.com/Chris022/php-template-engine-v2#readme"
+  "homepage": "https://github.com/Chris022/php-template-engine-v2#readme",
+  "dependencies": {
+    "ts-parser-combinator": "github:Chris022/ts-parser-combinator"
+  }
 }
