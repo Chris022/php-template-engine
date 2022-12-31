@@ -24,7 +24,6 @@ export interface StringLiteral{
     start:  number,
     end:    number,
     value:  string,
-    raw:    string  //The Passed Value
 }
 
 //--------------------Number--------------------//
@@ -33,8 +32,7 @@ export interface NumberLiteral{
     kind:   "NumberLiteral"
     start:  number,
     end:    number,
-    value:  number,
-    raw:    string
+    value:  number
 }
 
 //--------------------Array--------------------//
@@ -43,17 +41,10 @@ export interface ArrayExpression{
     kind:       "ArrayExpression"
     start:      number,
     end:        number,
-    elements:   Expression,
+    elements:   Expression[],
 }
 
 //--------------------Object--------------------//
-
-export interface ObjectExpression{
-    kind:       "ObjectExpression"
-    start:      number,
-    end:        number,
-    properties:   Expression,
-}
 
 export interface Property{
     kind:       "Property"
@@ -61,6 +52,13 @@ export interface Property{
     end:        number,
     key:   Identifier,
     value: Expression
+}
+
+export interface ObjectExpression{
+    kind:       "ObjectExpression"
+    start:      number,
+    end:        number,
+    properties:   Property[],
 }
 
 
@@ -75,23 +73,14 @@ export interface BinaryExpression{
     right:      Expression
 }
 
-export interface FalseKeyword{
-    kind:       "FalseKeyword",
+export interface Keyword{
+    kind:       "Keyword",
     start:      number,
     end:        number,
-    value:      boolean,
-    raw:        string
+    value:      boolean
 }
 
-export interface TrueKeyword{
-    kind:       "TrueKeyword",
-    start:      number,
-    end:        number,
-    value:      boolean,
-    raw:        string
-}
-
-export type BooleanExpression = BinaryExpression | FalseKeyword | TrueKeyword
+export type BooleanExpression = BinaryExpression | Keyword
 
 
 //--------------------FunctionCall--------------------//
