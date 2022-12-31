@@ -50,8 +50,8 @@ export interface Property{
     kind:       "Property"
     start:      number,
     end:        number,
-    key:   Identifier,
-    value: Expression
+    key:        StringLiteral|NumberLiteral,
+    value:      Expression
 }
 
 export interface ObjectExpression{

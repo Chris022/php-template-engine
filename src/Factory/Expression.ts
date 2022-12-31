@@ -48,7 +48,7 @@ export function createArrayExpression(start:number,end:number,elements:ast.Expre
     }
 }
 
-export function createProperty(start:number,end:number,key:ast.Identifier,value:ast.Expression):ast.Property{
+export function createProperty(start:number,end:number,key:ast.StringLiteral|ast.NumberLiteral,value:ast.Expression):ast.Property{
     return {
         kind:       "Property",
         start:      start,
