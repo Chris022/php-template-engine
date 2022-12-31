@@ -1,2 +1,17 @@
-Template ::= HTMLCode | PhpCode | PhpEcho
+/* Util Elements */
+whitespace ::= "' '" | "\n" | "\t"
 
+/* Document Elements */
+
+HTMLCode ::= (Char - '<?')+ /* Any char up until <? */
+
+PHPCode ::= "<?php" whitespace+ BlockStatement whitespace+ "?>"
+
+PHPEcho ::= "<?=" whitespace* ExpressionStatement  whitespace* "?>"
+
+Template ::= HTMLCode | PHPCode | PHPEcho
+
+
+/* Statement Elements */
+
+BlockStatement ::= null+ /* TODO */
