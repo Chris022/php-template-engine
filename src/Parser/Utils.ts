@@ -1,4 +1,4 @@
-import { choice, Parser, string } from "ts-parser-combinator";
+import { between, choice, doParser, Parser, string } from "ts-parser-combinator";
 
 export function whitepsace():Parser<string>{
     return choice([
@@ -6,4 +6,18 @@ export function whitepsace():Parser<string>{
         string("\n"),
         string("\t")
     ])
+}
+
+export function sapce():Parser<string[]>{
+    return whitepsace().many()
+}
+
+export function grouped<T>(p:Parser<T>):Parser<T>{
+    return doParser((s)=>{
+
+        let bracket = string("(").optional().parse(s)
+        let ret = p.parse(s)
+        if(bracket != undefined) string(")").parse(s)
+        return ret
+    })
 }

@@ -10,14 +10,14 @@ export function createIdentifier(start:number,end:number,name:string):ast.Identi
 }
 
 type objectArgument = ast.Identifier | ast.ArrayExpression | ast.ObjectExpression | ast.MemberExpression
-type propertyArgument = ast.NumberLiteral | ast.StringLiteral
-export function createMemberExpression(start:number,end:number,object:objectArgument,property:propertyArgument):ast.MemberExpression{
+type propertyArgument = (ast.NumberLiteral | ast.StringLiteral)[]
+export function createMemberExpression(start:number,end:number,object:objectArgument,properties:propertyArgument):ast.MemberExpression{
     return {
         kind:       "MemberExpression",
         start:      start,
         end:        end,
         object:     object,
-        property:   property
+        properties:   properties
     }
 }
 
@@ -87,7 +87,7 @@ export function createKeyword(start:number,end:number,value:boolean):ast.Keyword
     }
 }
 
-export function createCallExpression(start:number,end:number,callee:ast.Identifier,args:ast.Expression[]):ast.CallExpression{
+export function createCallExpression(start:number,end:number,callee:string,args:ast.Expression[]):ast.CallExpression{
     return {
         kind:       "CallExpression",
         start:      start,
@@ -97,7 +97,7 @@ export function createCallExpression(start:number,end:number,callee:ast.Identifi
     }
 }
 
-export function createAssignmentExpression(start:number,end:number,left:ast.Identifier,right:ast.Identifier):ast.AssignmentExpression{
+export function createAssignmentExpression(start:number,end:number,left:ast.Identifier,right:ast.Expression):ast.AssignmentExpression{
     return {
         kind:       "AssignmentExpression",
         start:      start,

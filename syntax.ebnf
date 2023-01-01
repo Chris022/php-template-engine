@@ -1,6 +1,8 @@
 /* Util Elements */
 whitespace ::= "' '" | "\n" | "\t"
 
+space ::= whitespace+
+
 /* Document Elements */
 
 HTMLCode ::= (Char - '<?')+ /* Any char up until <? */
@@ -11,6 +13,39 @@ PHPEcho ::= "<?=" whitespace* ExpressionStatement  whitespace* "?>"
 
 Template ::= HTMLCode | PHPCode | PHPEcho
 
+/* Expression Elements */
+
+Identifier ::= "$" letter+
+
+MemberExpression ::= Identifier ("[" (StringLiteral | NumberLiteral) "]")+
+
+StringLiteral ::= '"' Char '"'
+
+NumberLiteral ::= Digit ("." Digit+)?
+
+ArrayExpression ::= "[" space ((Expression space "," space)* Expression)? space "]"
+
+Property ::= (StringLiteral | NumberLiteral) space "=>" space Expression
+
+ObjectExpresstion ::= "[" space ((Property space "," space)* Property)? space "]"
+
+BinaryExpressionArgument ::= (NonBinaryExpresstion | "(" space Expresstion space ")")
+
+BinaryExpression ::= BinaryExpressionArgument space ("==" | "|=" | "<" | "<=" | ">" | ">=") space BinaryExpressionArgument
+
+Keyword ::= "False" | "True"
+
+BooleanExpression ::= BinaryExpression |  Keyword
+
+CallExpresstion ::= letter+ "(" space ((Expression space "," space)* Expression)? space ")"
+
+Expression ::= "("? (BooleanExpression | StringLiteral | NumberLiteral | ArrayExpression | Identifier | CallExpresstion | MemberExpression ) ")"?
+
+NonBinaryExpresstion ::= "("? (Keyword | StringLiteral | NumberLiteral | ArrayExpression | Identifier | CallExpresstion | MemberExpression ) ")"?
+
+AssignmentExpression ::= Identifier space Expression
+
+UpdateExpression ::= Identifier space ("++" | "--")
 
 /* Statement Elements */
 

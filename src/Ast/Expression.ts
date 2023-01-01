@@ -13,7 +13,7 @@ export interface MemberExpression{
     start:  number,
     end:    number,
     object: Identifier | ArrayExpression | ObjectExpression | MemberExpression
-    property: NumberLiteral | StringLiteral
+    properties: (NumberLiteral | StringLiteral)[]
 }
 
 
@@ -89,19 +89,29 @@ export interface CallExpression{
     kind:       "CallExpression",
     start:      number,
     end:        number,
-    callee:     Identifier //name of the called func,
+    callee:     string //name of the called func,
     arguments:  Expression[]
 }
 
 //--------------------Expression--------------------//
 
+export type NonBinaryExpresstion = StringLiteral
+                    | NumberLiteral
+                    | ArrayExpression
+                    | ObjectExpression
+                    | Keyword
+                    | MemberExpression
+                    | Identifier
+                    | CallExpression
+
 export type Expression =   StringLiteral
-                  | NumberLiteral
-                  | ArrayExpression
-                  | ObjectExpression
-                  | BooleanExpression
-                  | MemberExpression
-                  | Identifier
+                    | NumberLiteral
+                    | ArrayExpression
+                    | ObjectExpression
+                    | BooleanExpression
+                    | MemberExpression
+                    | Identifier
+                    | CallExpression
 
 //--------------------Special--------------------//
 
