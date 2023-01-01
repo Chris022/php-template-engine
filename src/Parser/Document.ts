@@ -1,19 +1,18 @@
-import { anyChar, choice, doParser, manyTill, Parser, string } from "ts-parser-combinator"
+import { anyChar, choice, doParser, fail, manyTill, Parser, string } from "ts-parser-combinator"
 import * as factory from "../Factory"
 import * as ast from "../Ast"
 
 import { whitepsace } from "./Utils"
 import { BlockStatement, ExpressionStatement } from "./Statement"
 
+
 export function HTMLCode():Parser<ast.HTMLCode>{
-    return doParser((s) => {
-        let start_pos = s.position
+    return doParser((s,start,end) => {
 
         let value_array:string[] = manyTill(anyChar(),string("<?")).parse(s)
         let value:string = value_array.join("")
-
-        let end_pos = s.position
-        return factory.createHTMLCode(start_pos,end_pos,value)
+        if(value.length == 0) fail().parse(s) 
+        return factory.createHTMLCode(start(),end(),value)
     })
 }
 
