@@ -1,7 +1,7 @@
 import { anyChar, between, choice, chooseBest, digit, doParser, letter, manyTill, Parser, sepBy, State, string } from "ts-parser-combinator"
 import * as factory from "../Factory"
 import * as ast from "../Ast"
-import { grouped, sapce, whitepsace } from "./Utils"
+import { grouped, space, whitepsace } from "./Utils"
 
 export function Identifier(): Parser<ast.Identifier> {
     return doParser((s, start, end) => {
@@ -74,14 +74,14 @@ export function ArrayExpression(): Parser<ast.ArrayExpression> {
     })
 }
 
-let TrimmedProperty = () => between(sapce(),sapce(),Property())
+let TrimmedProperty = () => between(space(),space(),Property())
 export function Property(): Parser<ast.Property> {
     return doParser((s, start, end) => {
 
         let key = StringLiteral().or(NumberLiteral()).parse(s)
-        sapce().parse(s)
+        space().parse(s)
         string("=>").parse(s)
-        sapce().parse(s)
+        space().parse(s)
         let value = Expression().parse(s)
 
         return factory.createProperty(start(), end(), key, value)
@@ -92,11 +92,11 @@ export function ObjectExpression(): Parser<ast.ObjectExpression> {
     return doParser((s, start, end) => {
 
         string("[").parse(s)
-        sapce().parse(s)
+        space().parse(s)
 
         let value = sepBy(TrimmedProperty(),string(",")).parse(s)
 
-        sapce().parse(s)
+        space().parse(s)
         string("]").parse(s)
 
         return factory.createObjectExpression(start(), end(), value)
@@ -105,9 +105,9 @@ export function ObjectExpression(): Parser<ast.ObjectExpression> {
 
 let BinaryExpressionArgument = () => NonBinaryExpresstion().or(doParser((s2)=>{
     string("(").parse(s2)
-    sapce().parse(s2)
+    space().parse(s2)
     let value = Expression().parse(s2);
-    sapce().parse(s2)
+    space().parse(s2)
     string(")").parse(s2)
     return value
 }))
@@ -115,7 +115,7 @@ let BinaryExpressionArgument = () => NonBinaryExpresstion().or(doParser((s2)=>{
 export function BinaryExpression(): Parser<ast.BinaryExpression> {
     return doParser((s, start, end) => {
         let left = BinaryExpressionArgument().parse(s)
-        sapce().parse(s)
+        space().parse(s)
         let operator = choice([
             string("=="),
             string("<"),
@@ -124,7 +124,7 @@ export function BinaryExpression(): Parser<ast.BinaryExpression> {
             string(">="),
             string("!=")
         ]).parse(s)
-        sapce().parse(s)
+        space().parse(s)
         let right = BinaryExpressionArgument().parse(s)
 
         return factory.createBinaryExpression(start(), end(), left, operator, right)
@@ -165,7 +165,7 @@ export function CallExpression():Parser<ast.CallExpression>{
     })
 }
 
-let TrimmedExpression = () => between(sapce(),sapce(),Expression())
+let TrimmedExpression = () => between(space(),space(),Expression())
 //Expression has to try every parser and choose the one that parses the most characters!!
 export function Expression(): Parser<ast.Expression> {
     return grouped(
@@ -199,9 +199,9 @@ export function AssignmentExpression():Parser<ast.AssignmentExpression>{
     return doParser((s, start, end) => {
 
         let to = Identifier().parse(s)
-        sapce().parse(s)
+        space().parse(s)
         string("=").parse(s)
-        sapce().parse(s)
+        space().parse(s)
         let value = Expression().parse(s)
 
         return factory.createAssignmentExpression(start(), end(), to, value)
@@ -212,7 +212,7 @@ export function UpdateExpression():Parser<ast.UpdateExpression>{
     return doParser((s, start, end) => {
 
         let value = Identifier().parse(s)
-        sapce().parse(s)
+        space().parse(s)
         let operator = choice([
             string("++"),
             string("--")

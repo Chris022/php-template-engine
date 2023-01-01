@@ -8,7 +8,7 @@ export function whitepsace():Parser<string>{
     ])
 }
 
-export function sapce():Parser<string[]>{
+export function space():Parser<string[]>{
     return whitepsace().many()
 }
 
