@@ -51,10 +51,10 @@ export function PHPEcho():Parser<ast.PHPEcho>{
     })
 }
 
-export function Template():Parser<ast.Template>{
+export function TemplateElement():Parser<ast.TemplateElement>{
     return choice([
-        HTMLCode()  as Parser<ast.Template>,
-        PHPCode()   as Parser<ast.Template>,
-        PHPEcho()   as Parser<ast.Template>
+        HTMLCode()  as Parser<ast.TemplateElement>,
+        PHPCode()   as Parser<ast.TemplateElement>,
+        PHPEcho()   as Parser<ast.TemplateElement>
     ])
 }

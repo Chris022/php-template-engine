@@ -11,7 +11,7 @@ PHPCode ::= "<?php" whitespace+ BlockStatement whitespace+ "?>"
 
 PHPEcho ::= "<?=" whitespace* ExpressionStatement  whitespace* "?>"
 
-Template ::= HTMLCode | PHPCode | PHPEcho
+TemplateElement ::= HTMLCode | PHPCode | PHPEcho
 
 /* Expression Elements */
 
