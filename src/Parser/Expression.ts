@@ -169,28 +169,34 @@ let TrimmedExpression = () => between(space(),space(),Expression())
 //Expression has to try every parser and choose the one that parses the most characters!!
 export function Expression(): Parser<ast.Expression> {
     return grouped(
-        chooseBest([
-            BooleanExpression() as Parser<ast.Expression>,
-            StringLiteral()     as Parser<ast.Expression>,
-            NumberLiteral()     as Parser<ast.Expression>,
-            ArrayExpression()   as Parser<ast.Expression>,
-            Identifier()        as Parser<ast.Expression>,
-            CallExpression()    as Parser<ast.Expression>,
-            MemberExpression()  as Parser<ast.NonBinaryExpresstion>,
+        choice([
+            //Start with clearly distinguishable elements
+            Identifier()        as Parser<ast.Expression>, //starts with a $
+            StringLiteral()     as Parser<ast.Expression>, //starts with a "
+            NumberLiteral()     as Parser<ast.Expression>, //starts with a Digit
+            ArrayExpression()   as Parser<ast.Expression>, //starts with [
+
+            CallExpression()    as Parser<ast.Expression>, //starts with a name followed by (
+
+            MemberExpression()  as Parser<ast.Expression>, //Also starts with an Array, Object or Member
+            BooleanExpression() as Parser<ast.Expression>, //Starts with an Expression
         ])
     )
 }
 
 export function NonBinaryExpresstion(): Parser<ast.NonBinaryExpresstion> {
     return grouped(
-        chooseBest([
-            Keyword()           as Parser<ast.NonBinaryExpresstion>,
-            StringLiteral()     as Parser<ast.NonBinaryExpresstion>,
-            NumberLiteral()     as Parser<ast.NonBinaryExpresstion>,
-            ArrayExpression()   as Parser<ast.NonBinaryExpresstion>,
-            Identifier()        as Parser<ast.NonBinaryExpresstion>,
-            CallExpression()    as Parser<ast.NonBinaryExpresstion>,
-            MemberExpression()  as Parser<ast.NonBinaryExpresstion>,
+        choice([
+            //Start with clearly distinguishable elements
+            Identifier()        as Parser<ast.NonBinaryExpresstion>, //starts with a $
+            StringLiteral()     as Parser<ast.NonBinaryExpresstion>, //starts with a "
+            NumberLiteral()     as Parser<ast.NonBinaryExpresstion>, //starts with a Digit
+            ArrayExpression()   as Parser<ast.NonBinaryExpresstion>, //starts with [
+
+            CallExpression()    as Parser<ast.NonBinaryExpresstion>, //starts with a name followed by (
+            Keyword()           as Parser<ast.NonBinaryExpresstion>, //starts with a name followed by (
+
+            MemberExpression()  as Parser<ast.NonBinaryExpresstion> //Also starts with an Array, Object or Member
         ])
     )
 }
@@ -221,9 +227,3 @@ export function UpdateExpression():Parser<ast.UpdateExpression>{
         return factory.createUpdateExpression(start(), end(), operator, value)
     })
 }
-
-
-//console.log(NumberLiteral().unParse(new State(`$test`)))
-console.log(JSON.stringify(
-    Expression().unParse(new State(`$hallo["test"]["hey"]`))
-,null,2))
