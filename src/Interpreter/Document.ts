@@ -34,3 +34,9 @@ export function TemplateElement():Interpreter<ast.TemplateElement,string>{
         }
     })
 }
+
+export function Template():Interpreter<ast.TemplateElement[],string>{
+    return doInterpreter((storrage,elm) => {
+        return elm.map(line => TemplateElement().run(storrage,line)).join("")
+    })
+}
