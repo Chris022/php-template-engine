@@ -9,7 +9,7 @@ export function createHTMLCode(start:number,end:number,value:string):ast.HTMLCod
     }
 }
 
-export function createPHPCode(start:number,end:number,value:ast.BlockStatement):ast.PHPCode{
+export function createPHPCode(start:number,end:number,value:ast.BlockStatement | ast.Statement):ast.PHPCode{
     return {
         kind:       "PHPCode",
         start:      start,
@@ -18,7 +18,7 @@ export function createPHPCode(start:number,end:number,value:ast.BlockStatement):
     }
 }
 
-export function createPhpEcho(start:number,end:number,value:ast.ExpressionStatement):ast.PHPEcho{
+export function createPhpEcho(start:number,end:number,value:ast.Expression):ast.PHPEcho{
     return {
         kind:       "PHPEcho",
         start:      start,

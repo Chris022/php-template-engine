@@ -1,4 +1,5 @@
-import { BlockStatement, ExpressionStatement } from "./Statement"
+import { BlockStatement, Statement } from "./Statement"
+import { Expression } from "./Expression"
 
 export interface HTMLCode{
     kind:       "HTMLCode",
@@ -11,14 +12,14 @@ export interface PHPCode{
     kind:       "PHPCode",
     start:      number,
     end:        number,
-    value:      BlockStatement
+    value:      BlockStatement | Statement
 }
 
 export interface PHPEcho{
     kind:       "PHPEcho",
     start:      number,
     end:        number,
-    value:      ExpressionStatement
+    value:      Expression
 }
 
 export type TemplateElement = PHPCode | PHPEcho | HTMLCode

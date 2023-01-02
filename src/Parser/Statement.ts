@@ -1,28 +1,165 @@
 import { anyChar, choice, doParser, manyTill, Parser, State, string } from "ts-parser-combinator"
 import * as factory from "../Factory"
 import * as ast from "../Ast"
-import { whitepsace } from "./Utils"
 import { createIdentifier } from "../Factory"
+import { space } from "./Utils"
+import { ArrayExpression, AssignmentExpression, BooleanExpression, Expression, Identifier, ObjectExpression, UpdateExpression } from "./Expression"
+import { TemplateElement } from "./Document"
+
+export function IfStatement():Parser<ast.IfStatement>{
+    return doParser((s,start,end) => {
+
+        string("if")
+            .right(space())
+            .right(string("("))
+            .right(space()).parse(s)
+
+        let test_condition = BooleanExpression().parse(s)
+
+        space()
+            .right(string(")"))
+            .right(space())
+            .right(string(":"))
+            .right(space())
+            .right(string("?>")).parse(s)
+
+        let consequent = TemplateElement().many().parse(s)
+
+        let alternate = string("<?php")
+                            .right(space())
+                            .right(string("else"))
+                            .right(space())
+                            .right(string(":"))
+                            .right(space())
+                            .right(string("?>"))
+                            .right(TemplateElement().many())
+                            .optional().parse(s)
+
+        string("<?php").parse(s)
+        space().parse(s)
+        string("endif").parse(s)
+        string(";").optional().parse(s)
+
+        if(alternate == undefined) return factory.createIfStatement(start(),end(),test_condition,consequent)
+        return factory.createIfStatement(start(),end(),test_condition,consequent,alternate)
+    })
+}
+
+export function ForStatement():Parser<ast.ForStatement>{
+    return doParser((s,start,end) => {
+
+        string("for")
+            .right(space())
+            .right(string("("))
+            .right(space()).parse(s)
+
+        let init = AssignmentExpression().optional().parse(s)
+        space().right(string(";")).right(space()).parse(s)
+        console.log("got to boolean")
+        let test = BooleanExpression().optional().parse(s)
+        console.log("got after boolean")
+        space().right(string(";")).right(space()).parse(s)
+
+        let update = UpdateExpression().optional().parse(s)
+
+        space()
+            .right(string(")"))
+            .right(space())
+            .right(string(":"))
+            .right(space())
+            .right(string("?>")).parse(s)
+
+        let body = TemplateElement().many().parse(s)
+
+        string("<?php").parse(s)
+        space().parse(s)
+        string("endfor").parse(s)
+        string(";").optional().parse(s)
+
+        return factory.createForStatement(start(),end(),
+            body,
+            init!=undefined?init:undefined,
+            test!=undefined?test:undefined,
+            update!=undefined?update:undefined,
+        )
+    })
+}
+
+export function ForEachStatement():Parser<ast.ForEachStatement>{
+    return doParser((s,start,end) => {
+
+        string("foreach")
+            .right(space())
+            .right(string("("))
+            .right(space()).parse(s)
+
+        let left = Identifier()
+                    .or(ArrayExpression())
+                    .or(ObjectExpression()).parse(s)
+
+        space()
+            .right(string("as"))
+            .right(space()).parse(s)
+
+        let key = Identifier().parse(s)
+
+        space()
+            .right(string("=>"))
+            .right(space()).parse(s)
+
+        let value = Identifier().parse(s)
+
+        space()
+            .right(string(")"))
+            .right(space())
+            .right(string(":"))
+            .right(space())
+            .right(string("?>")).parse(s)
+
+        let body = TemplateElement().many().parse(s)
+
+        string("<?php").parse(s)
+        space().parse(s)
+        string("endforeach").parse(s)
+        string(";").optional().parse(s)
+
+        return factory.createForEachStatement(start(),end(),left,key,value,body)
+    })
+}
+
+export function BreakStatement():Parser<ast.BreakStatement>{
+    return doParser((s,start,end) => {
+        string("break").parse(s)
+        string(";").optional().parse(s)
+        return factory.createBreakStatement(start(),end())
+    })
+}
+
+export function ContinueStatement():Parser<ast.ContinueStatement>{
+    return doParser((s,start,end) => {
+        string("continue").parse(s)
+        string(";").optional().parse(s)
+        return factory.createContinueStatement(start(),end())
+    })
+}
+
+export function Statement():Parser<ast.Statement>{
+    return choice([
+        IfStatement() as Parser<ast.Statement>,
+        ForEachStatement() as  Parser<ast.Statement>,
+        ForStatement() as Parser<ast.Statement>,
+        ContinueStatement() as Parser<ast.Statement>,
+        BreakStatement() as Parser<ast.Statement>,
+
+    ])
+}
 
 export function BlockStatement():Parser<ast.BlockStatement>{
-    return doParser((s) => {
-        let start_pos = s.position
+    return doParser((s,start,end) => {
+        
+        let statements = Statement().left(string(";")).many().parse(s)
 
-        //TODO IMplement propper parsing!
-
-        let end_pos = s.position
-        return factory.createBlockStatement(start_pos,end_pos,[])
+        return factory.createBlockStatement(start(),end(),statements)
     })
 }
 
-
-export function ExpressionStatement():Parser<ast.ExpressionStatement>{
-    return doParser((s) => {
-        let start_pos = s.position
-
-        //TODO Implement propper parsing!
-
-        let end_pos = s.position
-        return factory.createExpressionStatement(start_pos,end_pos,createIdentifier(0,0,"test"))
-    })
-}

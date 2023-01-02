@@ -1,4 +1,5 @@
 import { Declaration } from "./Declaration";
+import { TemplateElement } from "./Document";
 import { ArrayExpression, AssignmentExpression, BooleanExpression, Identifier, MemberExpression, ObjectExpression, UpdateExpression } from "./Expression";
 
 export interface BlockStatement{
@@ -13,18 +14,18 @@ export interface IfStatement{
     start:      number,
     end:        number,
     test:       BooleanExpression,
-    consequent: BlockStatement,
-    alternate?: BlockStatement
+    consequent: TemplateElement[],
+    alternate?: TemplateElement[]
 }
 
 export interface ForStatement{
     kind:       "ForStatement",
     start:      number,
     end:        number,
-    init:       AssignmentExpression | null,
-    test:       BooleanExpression  | null,
-    update:     UpdateExpression | null,
-    body:       BlockStatement
+    init?:       AssignmentExpression,
+    test?:       BooleanExpression ,
+    update?:     UpdateExpression,
+    body:        TemplateElement[]
 }
 
 export interface ForEachStatement{
@@ -34,7 +35,7 @@ export interface ForEachStatement{
     left:       Identifier | ArrayExpression | ObjectExpression,
     key:        Identifier,
     value:      Identifier,
-    block:      BlockStatement
+    block:      TemplateElement[]
 }
 
 export interface BreakStatement{
@@ -50,10 +51,3 @@ export interface ContinueStatement{
 }
 
 export type Statement = ContinueStatement | BreakStatement | ForEachStatement | ForStatement | IfStatement
-
-export interface ExpressionStatement{
-    kind:       "ExpressionStatement",
-    start:      number,
-    end:        number,
-    expression: Identifier | MemberExpression
-}

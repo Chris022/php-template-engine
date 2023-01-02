@@ -7,7 +7,7 @@ space ::= whitespace+
 
 HTMLCode ::= (Char - '<?')+ /* Any char up until <? */
 
-PHPCode ::= "<?php" whitespace+ BlockStatement whitespace+ "?>"
+PHPCode ::= "<?php" whitespace+ (Statement | BlockStatement) whitespace+ "?>"
 
 PHPEcho ::= "<?=" whitespace* ExpressionStatement  whitespace* "?>"
 
@@ -49,4 +49,16 @@ UpdateExpression ::= Identifier space ("++" | "--")
 
 /* Statement Elements */
 
-BlockStatement ::= null+ /* TODO */
+BlockStatement ::=  (Statement ";")+
+
+IfStatement ::= "if" space "(" space BooleanExpression space ")" space ":" space "?>" TemplateElement+ ("<?php" sapce "else" space ":" space "?>" TemplateElement+)? "<?php" space "endif"
+
+ForStatement ::= "for" space "(" space AssignmentExpression? space  ";" space BooleanExpression? space ";" space UpdateExpression? space ")" space ":" space "?>" TemplateElement+ "<?php" space "endfor"
+
+ForEachStatement ::= "foreach" space "(" space (Identifier | ArrayExpression | ObjectExpresstion) space  "as" space Identifier space "=>" space Identifier space ")" space ":" space "?>" TemplateElement+ "<?php" space "endforeach"
+
+BreakStatement ::= "break"
+
+ContinueStatement ::= "continue"
+
+Statement ::= IfStatement | ForEachStatement | ForStatement | BreakStatement | ContinueStatement

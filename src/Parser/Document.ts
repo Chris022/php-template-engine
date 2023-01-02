@@ -1,9 +1,10 @@
-import { anyChar, choice, doParser, fail, manyTill, Parser, string } from "ts-parser-combinator"
+import { anyChar, choice, doParser, fail, manyTill, Parser, State, string } from "ts-parser-combinator"
 import * as factory from "../Factory"
 import * as ast from "../Ast"
 
 import { whitepsace } from "./Utils"
-import { BlockStatement, ExpressionStatement } from "./Statement"
+import { BlockStatement, Statement } from "./Statement"
+import { Expression } from "./Expression"
 
 
 export function HTMLCode():Parser<ast.HTMLCode>{
@@ -23,7 +24,7 @@ export function PHPCode():Parser<ast.PHPCode>{
         string("<?php").parse(s)
         whitepsace().many1().parse(s)
 
-        let value = BlockStatement().parse(s)
+        let value = Statement().or(BlockStatement()).parse(s)
 
         whitepsace().many().parse(s)
         string("?>").parse(s)
@@ -40,7 +41,7 @@ export function PHPEcho():Parser<ast.PHPEcho>{
         string("<?=").parse(s)
         whitepsace().many().parse(s)
 
-        let value = ExpressionStatement().parse(s)
+        let value = Expression().parse(s)
 
         whitepsace().many().parse(s)
         string("?>").parse(s)
