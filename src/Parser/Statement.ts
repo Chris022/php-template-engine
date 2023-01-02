@@ -3,7 +3,7 @@ import * as factory from "../Factory"
 import * as ast from "../Ast"
 import { createIdentifier } from "../Factory"
 import { space } from "./Utils"
-import { ArrayExpression, AssignmentExpression, BooleanExpression, Expression, Identifier, ObjectExpression, UpdateExpression } from "./Expression"
+import { ArrayExpression, AssignmentExpression, BooleanExpression, Expression, Identifier, ObjectExpression, StringLiteral, UpdateExpression } from "./Expression"
 import { TemplateElement } from "./Document"
 
 export function IfStatement():Parser<ast.IfStatement>{
@@ -143,6 +143,17 @@ export function ContinueStatement():Parser<ast.ContinueStatement>{
     })
 }
 
+export function IncludeStatement():Parser<ast.IncludeStatement>{
+    return doParser((s,start,end) => {
+        
+        string("include").parse(s)
+        space().parse(s)
+        let file = StringLiteral().parse(s)
+
+        return factory.createIncludeStatement(start(),end(),file)
+    })
+}
+
 export function Statement():Parser<ast.Statement>{
     return choice([
         IfStatement() as Parser<ast.Statement>,
@@ -150,7 +161,7 @@ export function Statement():Parser<ast.Statement>{
         ForStatement() as Parser<ast.Statement>,
         ContinueStatement() as Parser<ast.Statement>,
         BreakStatement() as Parser<ast.Statement>,
-
+        IncludeStatement() as Parser<ast.Statement>
     ])
 }
 

@@ -61,4 +61,6 @@ BreakStatement ::= "break"
 
 ContinueStatement ::= "continue"
 
-Statement ::= IfStatement | ForEachStatement | ForStatement | BreakStatement | ContinueStatement
+IncludeStatement ::= "include" space StringLiteral
+
+Statement ::= IfStatement | ForEachStatement | ForStatement | BreakStatement | ContinueStatement | IncludeStatement

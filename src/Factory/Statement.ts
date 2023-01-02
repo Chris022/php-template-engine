@@ -1,7 +1,7 @@
 import * as ast from "../Ast"
 import { BooleanExpression } from "../Ast"
 
-export function createBlockStatement(start:number,end:number,body:(ast.Statement | ast.Declaration)[]):ast.BlockStatement{
+export function createBlockStatement(start:number,end:number,body:ast.Statement[]):ast.BlockStatement{
     return {
         kind:       "BlockStatement",
         start:      start,
@@ -62,12 +62,14 @@ export function createContinueStatement(start:number,end:number):ast.ContinueSta
     }
 }
 
-export function createExpressionStatement(start:number,end:number,expression:ast.Identifier | ast.MemberExpression):ast.ExpressionStatement{
+
+export function createIncludeStatement(start:number,end:number,source:ast.StringLiteral):ast.IncludeStatement{
     return {
-        kind:       "ExpressionStatement",
+        kind:       "IncludeStatement",
         start:      start,
         end:        end,
-        expression: expression  
+        source:     source  
     }
 }
+
 

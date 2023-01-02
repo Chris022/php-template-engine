@@ -1,12 +1,11 @@
-import { Declaration } from "./Declaration";
 import { TemplateElement } from "./Document";
-import { ArrayExpression, AssignmentExpression, BooleanExpression, Identifier, MemberExpression, ObjectExpression, UpdateExpression } from "./Expression";
+import { ArrayExpression, AssignmentExpression, BooleanExpression, Identifier, MemberExpression, ObjectExpression, StringLiteral, UpdateExpression } from "./Expression";
 
 export interface BlockStatement{
     kind:       "BlockStatement",
     start:      number,
     end:        number,
-    body:       (Statement | Declaration)[]
+    body:       (Statement)[]
 }
 
 export interface IfStatement{
@@ -50,4 +49,11 @@ export interface ContinueStatement{
     end:        number,
 }
 
-export type Statement = ContinueStatement | BreakStatement | ForEachStatement | ForStatement | IfStatement
+export interface IncludeStatement{
+    kind:       "IncludeStatement",
+    start:      number,
+    end:        number,
+    source:     StringLiteral
+}
+
+export type Statement = IncludeStatement | ContinueStatement | BreakStatement | ForEachStatement | ForStatement | IfStatement
