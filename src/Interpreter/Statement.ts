@@ -14,11 +14,39 @@ export function BlockStatement():Interpreter<ast.BlockStatement,emptystring>{
     })
 }
 
+function TemplateInternal():Interpreter<ast.TemplateElement[],string>{
+    return doInterpreter((storrage,elm)=>{
+        let break_ = false;
+        let continue_ = false;
+        let ret = ""
+        for(var i = 0; i< elm.length;i++){
+            try {
+                ret+= TemplateElement().run(storrage,elm[i])
+            } catch (error) {
+                if(error instanceof BreakError){
+                    ret += error.value
+                    break_ = true;
+                    break;
+                }
+                if(error instanceof ContinueError){
+                    ret += error.value
+                    continue_ = false;
+                    break;
+                }
+            }
+        }
+        if(break_)      throw new BreakError(ret)
+        if(continue_)   throw new ContinueError(ret)
+
+        return ret
+    })
+}
+
 export function IfStatement():Interpreter<ast.IfStatement,string>{
     return doInterpreter((storrage,elm) => {
         let test_condition = BooleanExpression().run(storrage,elm.test)
         if(test_condition){
-            return elm.consequent.map(line => TemplateElement().run(storrage,line)).join("")
+            return TemplateInternal().run(storrage,elm.consequent)
         }
         if(elm.alternate != undefined) return elm.alternate.map(line => TemplateElement().run(storrage,line)).join("")
         return ""
@@ -37,21 +65,18 @@ export function ForStatement():Interpreter<ast.ForStatement,string>{
             if(elm.update != undefined){
                 UpdateExpression().run(storrage,elm.update)
             }
-            let break_ = false;
-            for(var i = 0; i< elm.body.length;i++){
-                try {
-                    ret+= TemplateElement().run(storrage,elm.body[i])
-                } catch (error) {
-                    if(error instanceof BreakError){
-                        break_ = true;
-                        break;
-                    }
-                    if(error instanceof ContinueError){
-                        break;
-                    }
+            try {
+                ret += TemplateInternal().run(storrage,elm.body)
+            } catch (error) {
+                if(error instanceof BreakError){
+                    ret += error.value
+                    break;
+                }
+                if(error instanceof ContinueError){
+                    ret += error.value
+                    continue;
                 }
             }
-            if(break_) break;
         }
         return ret
     })
@@ -66,21 +91,18 @@ export function ForEachStatement():Interpreter<ast.ForEachStatement,string>{
             storrage.store(elm.key.name,key)
             storrage.store(elm.value.name,e)
 
-            let break_ = false;
-            for(var i = 0; i< elm.block.length;i++){
-                try {
-                    ret+= TemplateElement().run(storrage,elm.block[i])
-                } catch (error) {
-                    if(error instanceof BreakError){
-                        break_ = true;
-                        break;
-                    }
-                    if(error instanceof ContinueError){
-                        break;
-                    }
+            try {
+                ret += TemplateInternal().run(storrage,elm.block)
+            } catch (error) {
+                if(error instanceof BreakError){
+                    ret += error.value
+                    return false;
+                }
+                if(error instanceof ContinueError){
+                    ret += error.value
+                    return true;
                 }
             }
-            if(break_) return false;
             return true;
         })
         
@@ -89,11 +111,11 @@ export function ForEachStatement():Interpreter<ast.ForEachStatement,string>{
 }
 
 export function BreakStatement():Interpreter<ast.BreakStatement,emptystring>{
-    throw new BreakError();
+    throw new BreakError("");
 }
 
 export function ContinueStatement():Interpreter<ast.ContinueStatement,emptystring>{
-    throw new ContinueError();
+    throw new ContinueError("");
 }
 
 export function IncludeStatement():Interpreter<ast.IncludeStatement,string>{

@@ -6,6 +6,10 @@ export class RunTimeError extends Error{
     }
 }
 
-export class BreakError extends Error{}
+export class BreakError extends Error{
+    constructor(public value:string){super()}
+}
 
-export class ContinueError extends Error{}
+export class ContinueError extends Error{
+    constructor(public value:string){super()}
+}
