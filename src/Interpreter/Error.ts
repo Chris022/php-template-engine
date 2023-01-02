@@ -5,3 +5,7 @@ export class RunTimeError extends Error{
         else super("In: " + in_ +" at " + from + "-" + to +": "+message)
     }
 }
+
+export class BreakError extends Error{}
+
+export class ContinueError extends Error{}

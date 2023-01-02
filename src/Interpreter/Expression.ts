@@ -1,5 +1,4 @@
 import * as ast from "../Ast"
-import { createArrayExpression, createMemberExpression, createNumberLiteral, createObjectExpression, createProperty, createStringLiteral } from "../Factory";
 import { RunTimeError } from "./Error";
 import { callFunction } from "./functions";
 import { doInterpreter, Interpreter, VariableStorrage } from "./Interpreter";
