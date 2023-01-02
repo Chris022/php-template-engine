@@ -72,4 +72,12 @@ export function createIncludeStatement(start:number,end:number,source:ast.String
     }
 }
 
-
+export function createCallStatement(start:number,end:number,callee:string,args:ast.Expression[]):ast.CallStatement{
+    return {
+        kind:       "CallStatement",
+        start:      start,
+        end:        end,
+        callee:     callee,
+        arguments:  args
+    }
+}

@@ -1,4 +1,4 @@
-import { anyChar, choice, doParser, manyTill, Parser, State, string } from "ts-parser-combinator"
+import { anyChar, between, choice, doParser, letter, manyTill, Parser, sepBy, State, string } from "ts-parser-combinator"
 import * as factory from "../Factory"
 import * as ast from "../Ast"
 import { createIdentifier } from "../Factory"
@@ -154,14 +154,27 @@ export function IncludeStatement():Parser<ast.IncludeStatement>{
     })
 }
 
+export function CallStatement():Parser<ast.CallStatement>{
+    return doParser((s, start, end) => {
+
+        let callee = letter().manyc1().parse(s)
+        string("(").parse(s)
+        let args = sepBy(between(space(),space(),Expression()),string(",")).parse(s)
+        string(")").parse(s)
+
+        return factory.createCallStatement(start(), end(), callee, args)
+    })
+}
+
 export function Statement():Parser<ast.Statement>{
     return choice([
-        IfStatement() as Parser<ast.Statement>,
-        ForEachStatement() as  Parser<ast.Statement>,
-        ForStatement() as Parser<ast.Statement>,
+        IfStatement()       as Parser<ast.Statement>,
+        ForEachStatement()  as Parser<ast.Statement>,
+        ForStatement()      as Parser<ast.Statement>,
         ContinueStatement() as Parser<ast.Statement>,
-        BreakStatement() as Parser<ast.Statement>,
-        IncludeStatement() as Parser<ast.Statement>
+        BreakStatement()    as Parser<ast.Statement>,
+        IncludeStatement()  as Parser<ast.Statement>,
+        CallStatement()     as Parser<ast.Statement>
     ])
 }
 

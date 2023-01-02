@@ -1,5 +1,5 @@
 import { TemplateElement } from "./Document";
-import { ArrayExpression, AssignmentExpression, BooleanExpression, Identifier, MemberExpression, ObjectExpression, StringLiteral, UpdateExpression } from "./Expression";
+import { ArrayExpression, AssignmentExpression, BooleanExpression, Expression, Identifier, MemberExpression, ObjectExpression, StringLiteral, UpdateExpression } from "./Expression";
 
 export interface BlockStatement{
     kind:       "BlockStatement",
@@ -56,4 +56,12 @@ export interface IncludeStatement{
     source:     StringLiteral
 }
 
-export type Statement = IncludeStatement | ContinueStatement | BreakStatement | ForEachStatement | ForStatement | IfStatement
+export interface CallStatement{
+    kind:       "CallStatement",
+    start:      number,
+    end:        number,
+    callee:     string //name of the called func,
+    arguments:  Expression[]
+}
+
+export type Statement = IncludeStatement | ContinueStatement | BreakStatement | ForEachStatement | ForStatement | IfStatement | CallStatement
