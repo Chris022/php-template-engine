@@ -122,7 +122,8 @@ export function BinaryExpression(): Parser<ast.BinaryExpression> {
             string(">"),
             string("<="),
             string(">="),
-            string("!=")
+            string("!="),
+            string("!==")
         ]).parse(s)
         space().parse(s)
         let right = BinaryExpressionArgument().parse(s)
