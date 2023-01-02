@@ -19,7 +19,7 @@ export function MemberExpression():Parser<ast.MemberExpression>{
         let object = Identifier()
                         .or(ArrayExpression())
                         .or(ObjectExpression())
-                        .or(MemberExpression()).parse(s)
+                        .or(string("(").right(MemberExpression()).left(string(")"))).parse(s)
 
         let properties = doParser((s2)=>{
             string("[").parse(s2)
