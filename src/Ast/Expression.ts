@@ -69,7 +69,7 @@ export interface BinaryExpression{
     start:      number,
     end:        number,
     left:       Expression
-    operator:   string,
+    operator:   string, // ==,===,!=,!==,<,<=,>,>=
     right:      Expression
 }
 
