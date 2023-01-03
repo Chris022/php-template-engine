@@ -133,7 +133,14 @@ export function MemberExpression(): Interpreter<ast.MemberExpression, expression
 export function CallExpression(): Interpreter<ast.CallExpression,expression> {
     return doInterpreter((storrage, elm) => {
         let args = elm.arguments.map(x=>Expression().run(storrage,x))
-        return callFunction(elm.callee,args)
+        try {
+            return callFunction(storrage,elm.callee,args);
+        } catch (error) {
+            if(error instanceof RunTimeError){
+                throw new RunTimeError(error.message,elm.start,elm.end)
+            }
+            throw error
+        }        
     })
 }
 
