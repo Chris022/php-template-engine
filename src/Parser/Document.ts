@@ -58,3 +58,7 @@ export function TemplateElement():Parser<ast.TemplateElement>{
         PHPEcho()   as Parser<ast.TemplateElement>
     ])
 }
+
+export function Template():Parser<ast.TemplateElement[]>{
+    return TemplateElement().many()
+}
