@@ -87,9 +87,9 @@ export function ForEachStatement():Interpreter<ast.ForEachStatement,string>{
         let obj = Expression().run(storrage,elm.left)
         if(typeof obj != "object") throw new RunTimeError("Can only iterate through an object, or an array", elm.start, elm.end)
         let ret = ""
-        Object.entries(obj).every((e,key) => {
-            storrage.store(elm.key.name,key)
-            storrage.store(elm.value.name,e)
+        Object.entries(obj).every((e) => {
+            storrage.store(elm.key.name,e[0])
+            storrage.store(elm.value.name,e[1])
 
             try {
                 ret += TemplateInternal().run(storrage,elm.block)
