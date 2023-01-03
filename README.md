@@ -1,17 +1,18 @@
 # php-template-engine
 
-A Template Engine that uses a subset of PHP as its syntax. This allows templates that are written using this language to be used just as they are in PHP
+A Template Engine that uses a subset of PHP as its syntax. This allows templates that are written using this language to be used just as they are in PHP.
+For syntax docu check "syntax.xhtml" or "syntax.ebnf"
 
 ## Usage
 
 ```ts
-    import {runFromString, runFromFile} from "php-template-engine"
+    import {template, template_from_file} from "php-template-engine"
 
     //Allows you to input code as a string
-    runFromString("...")
+    template("...")
 
     //Allows you to run code from a file
-    runFromFile("...")
+    template_from_file("...")
 ```
 
 ## Subset
