@@ -9,7 +9,7 @@ import { Expression } from "./Expression"
 
 export function HTMLCode():Parser<ast.HTMLCode>{
     return doParser((s,start,end) => {
-
+        
         let value_array:string[] = manyTill(anyChar(),string("<?")).parse(s)
         let value:string = value_array.join("")
         if(value.length == 0) fail().parse(s) 

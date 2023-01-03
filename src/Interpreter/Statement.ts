@@ -1,10 +1,13 @@
+import * as fs from 'fs';
+import { interpret } from '.';
+
 import * as ast from "../Ast"
-import { createAssignmentExpression, createBinaryExpression, createBreakStatement, createForStatement, createIdentifier, createNumberLiteral, createPHPCode, createStringLiteral, createUpdateExpression } from "../Factory";
-import { TemplateElement } from "./Document";
+import { parse } from '../Parser';
+import { Template, TemplateElement } from "./Document";
 import { BreakError, ContinueError, RunTimeError } from "./Error";
 import { AssignmentExpression, BooleanExpression, Expression, UpdateExpression } from "./Expression";
 import { callRoutine } from "./functions";
-import { doInterpreter, Interpreter, VariableStorrage } from "./Interpreter";
+import { doInterpreter, Interpreter } from "./Interpreter";
 
 type emptystring = string
 
@@ -126,8 +129,16 @@ export function ContinueStatement():Interpreter<ast.ContinueStatement,emptystrin
 
 export function IncludeStatement():Interpreter<ast.IncludeStatement,string>{
     return doInterpreter((storrage,elm) => {
-        /*TODO*/
-        return ""
+        let file_name = elm.source.value
+        let file;
+        try {
+            file = fs.readFileSync(file_name,'utf8');
+
+        } catch (error) {
+            throw new RunTimeError("Could not find file: '"+file_name+"'",elm.start,elm.end,"Import Statement")
+        }
+        let ast = parse(file)
+        return Template().run(storrage,ast)
     })
 }
 
