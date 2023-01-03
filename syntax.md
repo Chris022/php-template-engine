@@ -1,6 +1,8 @@
 # Syntax
 This sheet defines the supported syntax. The used syntax is based on: https://www.php.net/manual/en/language.control-structures.php
 
+For detailt syntax description see syntax.xhtml or syntax.ebnf
+
 ## HTML Elements
 All Normal HTML tags are supported
 
