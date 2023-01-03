@@ -1,0 +1,17 @@
+import { Parser } from "ts-parser-combinator";
+import * as ast from "../Ast";
+export declare function Identifier(): Parser<ast.Identifier>;
+export declare function MemberExpression(): Parser<ast.MemberExpression>;
+export declare function StringLiteral(): Parser<ast.StringLiteral>;
+export declare function NumberLiteral(): Parser<ast.NumberLiteral>;
+export declare function ArrayExpression(): Parser<ast.ArrayExpression>;
+export declare function Property(): Parser<ast.Property>;
+export declare function ObjectExpression(): Parser<ast.ObjectExpression>;
+export declare function BinaryExpression(): Parser<ast.BinaryExpression>;
+export declare function Keyword(): Parser<ast.Keyword>;
+export declare function BooleanExpression(): Parser<ast.BooleanExpression>;
+export declare function CallExpression(): Parser<ast.CallExpression>;
+export declare function Expression(): Parser<ast.Expression>;
+export declare function NonBinaryExpresstion(): Parser<ast.NonBinaryExpresstion>;
+export declare function AssignmentExpression(): Parser<ast.AssignmentExpression>;
+export declare function UpdateExpression(): Parser<ast.UpdateExpression>;

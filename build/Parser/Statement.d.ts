@@ -1,0 +1,11 @@
+import { Parser } from "ts-parser-combinator";
+import * as ast from "../Ast";
+export declare function IfStatement(): Parser<ast.IfStatement>;
+export declare function ForStatement(): Parser<ast.ForStatement>;
+export declare function ForEachStatement(): Parser<ast.ForEachStatement>;
+export declare function BreakStatement(): Parser<ast.BreakStatement>;
+export declare function ContinueStatement(): Parser<ast.ContinueStatement>;
+export declare function IncludeStatement(): Parser<ast.IncludeStatement>;
+export declare function CallStatement(): Parser<ast.CallStatement>;
+export declare function Statement(): Parser<ast.Statement>;
+export declare function BlockStatement(): Parser<ast.BlockStatement>;

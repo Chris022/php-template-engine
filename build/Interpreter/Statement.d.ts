@@ -1,0 +1,13 @@
+import * as ast from "../Ast";
+import { Interpreter } from "./Interpreter";
+declare type emptystring = string;
+export declare function BlockStatement(): Interpreter<ast.BlockStatement, emptystring>;
+export declare function IfStatement(): Interpreter<ast.IfStatement, string>;
+export declare function ForStatement(): Interpreter<ast.ForStatement, string>;
+export declare function ForEachStatement(): Interpreter<ast.ForEachStatement, string>;
+export declare function BreakStatement(): Interpreter<ast.BreakStatement, emptystring>;
+export declare function ContinueStatement(): Interpreter<ast.ContinueStatement, emptystring>;
+export declare function IncludeStatement(): Interpreter<ast.IncludeStatement, string>;
+export declare function CallStatement(): Interpreter<ast.CallStatement, emptystring>;
+export declare function Statement(): Interpreter<ast.Statement, string>;
+export {};

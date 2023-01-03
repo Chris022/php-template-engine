@@ -1,8 +1,8 @@
 {
-  "name": "php-template-engine-v2",
+  "name": "php-template-engine",
   "version": "1.0.0",
   "description": "A Template Engine that uses a subset of PHP as its syntax. This allows templates that are written using this language to be used just as they are in PHP",
-  "main": "index.js",
+  "main": "./build/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

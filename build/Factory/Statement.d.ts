@@ -1,0 +1,11 @@
+import * as ast from "../Ast";
+export declare function createBlockStatement(start: number, end: number, body: ast.Statement[]): ast.BlockStatement;
+export declare function createIfStatement(start: number, end: number, test: ast.BooleanExpression, consequent: ast.TemplateElement[], alternate?: ast.TemplateElement[]): ast.IfStatement;
+export declare function createForStatement(start: number, end: number, body: ast.TemplateElement[], init?: ast.AssignmentExpression, test?: ast.BooleanExpression, update?: ast.UpdateExpression): ast.ForStatement;
+declare type ForEachLeft = ast.Identifier | ast.ArrayExpression | ast.ObjectExpression;
+export declare function createForEachStatement(start: number, end: number, left: ForEachLeft, key: ast.Identifier, value: ast.Identifier, block: ast.TemplateElement[]): ast.ForEachStatement;
+export declare function createBreakStatement(start: number, end: number): ast.BreakStatement;
+export declare function createContinueStatement(start: number, end: number): ast.ContinueStatement;
+export declare function createIncludeStatement(start: number, end: number, source: ast.StringLiteral): ast.IncludeStatement;
+export declare function createCallStatement(start: number, end: number, callee: string, args: ast.Expression[]): ast.CallStatement;
+export {};
