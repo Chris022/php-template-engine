@@ -24,6 +24,9 @@ export class VariableStorrage{
         if(Object.keys(this.storrage).includes(name)) return this.storrage[name]
         return undefined
     }
+    public remove(name:string):void{
+        delete this.storrage[name];
+    }
     public clone():VariableStorrage{
         let vs = new VariableStorrage()
         Object.keys(this.storrage).forEach(key => {
