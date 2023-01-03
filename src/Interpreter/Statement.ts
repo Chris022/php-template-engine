@@ -3,6 +3,7 @@ import { createAssignmentExpression, createBinaryExpression, createBreakStatemen
 import { TemplateElement } from "./Document";
 import { BreakError, ContinueError, RunTimeError } from "./Error";
 import { AssignmentExpression, BooleanExpression, Expression, UpdateExpression } from "./Expression";
+import { callRoutine } from "./functions";
 import { doInterpreter, Interpreter, VariableStorrage } from "./Interpreter";
 
 type emptystring = string
@@ -78,6 +79,9 @@ export function ForStatement():Interpreter<ast.ForStatement,string>{
                 }
             }
         }
+        //Clear varaibles
+        if(elm.init != undefined) storrage.remove(elm.init.left.name)
+        
         return ret
     })
 }
@@ -105,7 +109,9 @@ export function ForEachStatement():Interpreter<ast.ForEachStatement,string>{
             }
             return true;
         })
-        
+        //Clear varaibles
+        storrage.remove(elm.key.name)
+        storrage.remove(elm.value.name)
         return ret
     })
 }
@@ -126,8 +132,9 @@ export function IncludeStatement():Interpreter<ast.IncludeStatement,string>{
 }
 
 export function CallStatement():Interpreter<ast.CallStatement,emptystring>{
-    return doInterpreter((storrage,elm) => {
-        /*TODO*/
+    return doInterpreter((storrage, elm) => {
+        let args = elm.arguments.map(x=>Expression().run(storrage,x))
+        callRoutine(storrage,elm.callee,args)
         return ""
     })
 }
