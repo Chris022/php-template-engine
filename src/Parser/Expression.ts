@@ -176,6 +176,7 @@ export function Expression(): Parser<ast.Expression> {
             StringLiteral()     as Parser<ast.Expression>, //starts with a "
             NumberLiteral()     as Parser<ast.Expression>, //starts with a Digit
             ArrayExpression()   as Parser<ast.Expression>, //starts with [
+            ObjectExpression()  as Parser<ast.Expression>, //starts with [
 
             CallExpression()    as Parser<ast.Expression>, //starts with a name followed by (
 
@@ -193,6 +194,7 @@ export function NonBinaryExpresstion(): Parser<ast.NonBinaryExpresstion> {
             StringLiteral()     as Parser<ast.NonBinaryExpresstion>, //starts with a "
             NumberLiteral()     as Parser<ast.NonBinaryExpresstion>, //starts with a Digit
             ArrayExpression()   as Parser<ast.NonBinaryExpresstion>, //starts with [
+            ObjectExpression()  as Parser<ast.NonBinaryExpresstion>, //starts with [
 
             CallExpression()    as Parser<ast.NonBinaryExpresstion>, //starts with a name followed by (
             Keyword()           as Parser<ast.NonBinaryExpresstion>, //starts with a name followed by (

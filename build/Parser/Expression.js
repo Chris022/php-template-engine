@@ -171,6 +171,7 @@ function Expression() {
         StringLiteral(),
         NumberLiteral(),
         ArrayExpression(),
+        ObjectExpression(),
         CallExpression(),
         MemberExpression(),
         BooleanExpression(),
@@ -184,6 +185,7 @@ function NonBinaryExpresstion() {
         StringLiteral(),
         NumberLiteral(),
         ArrayExpression(),
+        ObjectExpression(),
         CallExpression(),
         Keyword(),
         MemberExpression() //Also starts with an Array, Object or Member
