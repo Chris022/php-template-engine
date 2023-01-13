@@ -1,6 +1,6 @@
 # php-template-engine
 
-A Template Engine that uses a subset of PHP as its syntax. This allows templates that are written using this language to be used just as they are in PHP.
+A Template Engine that uses a subset of PHP as its syntax. This enables templates written in this language to be used just as they are in PHP.
 For syntax docu check "syntax.xhtml" or "syntax.ebnf"
 
 ## Usage
@@ -54,14 +54,13 @@ The following binary-operators are supported:
 * ==
 * ===
 * !=
+* !==
 * <
 * >
 ### UnaryOperators
 The following unary-operators are supported:
 * ++
 * --
-* +=...
-* -=...
 
 ### Controlstructures
 
