@@ -35,7 +35,6 @@ function HTMLCode() {
         let value = value_array.join("");
         if (value.length == 0)
             (0, ts_parser_combinator_1.fail)().parse(s);
-        console.log("HTML did it");
         return factory.createHTMLCode(start(), end(), value);
     });
 }
@@ -49,7 +48,6 @@ function PHPCode() {
         (0, Utils_1.whitepsace)().many().parse(s);
         (0, ts_parser_combinator_1.string)("?>").parse(s);
         let end_pos = s.position;
-        console.log("PHP did it");
         return factory.createPHPCode(start_pos, end_pos, value);
     });
 }
@@ -63,7 +61,6 @@ function PHPEcho() {
         (0, Utils_1.whitepsace)().many().parse(s);
         (0, ts_parser_combinator_1.string)("?>").parse(s);
         let end_pos = s.position;
-        console.log("Echo did it");
         return factory.createPhpEcho(start_pos, end_pos, value);
     });
 }

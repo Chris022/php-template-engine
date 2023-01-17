@@ -13,7 +13,6 @@ export function HTMLCode():Parser<ast.HTMLCode>{
         let value_array:string[] = manyTill(anyChar(),string("<?")).parse(s)
         let value:string = value_array.join("")
         if(value.length == 0) fail().parse(s) 
-        console.log("HTML did it")
         return factory.createHTMLCode(start(),end(),value)
     })
 }
@@ -31,7 +30,6 @@ export function PHPCode():Parser<ast.PHPCode>{
         string("?>").parse(s)
 
         let end_pos = s.position
-        console.log("PHP did it")
         return factory.createPHPCode(start_pos,end_pos,value)
     })
 }
@@ -49,7 +47,6 @@ export function PHPEcho():Parser<ast.PHPEcho>{
         string("?>").parse(s)
 
         let end_pos = s.position
-        console.log("Echo did it")
         return factory.createPhpEcho(start_pos,end_pos,value)
     })
 }
