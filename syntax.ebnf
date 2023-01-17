@@ -63,4 +63,6 @@ ContinueStatement ::= "continue"
 
 IncludeStatement ::= "include" space StringLiteral
 
-Statement ::= IfStatement | ForEachStatement | ForStatement | BreakStatement | ContinueStatement | IncludeStatement
+CallStatement ::= letter+ "(" space ((Expression space "," space)* Expression)? space ")" (";"?)
+
+Statement ::= IfStatement | ForEachStatement | ForStatement | BreakStatement | ContinueStatement | IncludeStatement | CallStatement
