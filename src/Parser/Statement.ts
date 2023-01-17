@@ -157,7 +157,7 @@ export function IncludeStatement():Parser<ast.IncludeStatement>{
 export function CallStatement():Parser<ast.CallStatement>{
     return doParser((s, start, end) => {
 
-        let callee = letter().manyc1().parse(s)
+        let callee = letter().or(string("_")).manyc1().parse(s)
         string("(").parse(s)
         let args = sepBy(between(space(),space(),Expression()),string(",")).parse(s)
         string(")").parse(s)

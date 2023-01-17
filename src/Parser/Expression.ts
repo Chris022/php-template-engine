@@ -7,7 +7,7 @@ export function Identifier(): Parser<ast.Identifier> {
     return doParser((s, start, end) => {
 
         string("$").parse(s)
-        let value = letter().manyc1().parse(s)
+        let value = letter().or(string("_")).manyc1().parse(s)
 
         return factory.createIdentifier(start(), end(), value)
     })
@@ -157,7 +157,7 @@ export function BooleanExpression(): Parser<ast.BooleanExpression> {
 export function CallExpression():Parser<ast.CallExpression>{
     return doParser((s, start, end) => {
 
-        let callee = letter().manyc1().parse(s)
+        let callee = letter().or(string("_")).manyc1().parse(s)
         string("(").parse(s)
         let args = sepBy(TrimmedExpression(),string(",")).parse(s)
         string(")").parse(s)

@@ -30,7 +30,7 @@ const Utils_1 = require("./Utils");
 function Identifier() {
     return (0, ts_parser_combinator_1.doParser)((s, start, end) => {
         (0, ts_parser_combinator_1.string)("$").parse(s);
-        let value = (0, ts_parser_combinator_1.letter)().manyc1().parse(s);
+        let value = (0, ts_parser_combinator_1.letter)().or((0, ts_parser_combinator_1.string)("_")).manyc1().parse(s);
         return factory.createIdentifier(start(), end(), value);
     });
 }
@@ -154,7 +154,7 @@ function BooleanExpression() {
 exports.BooleanExpression = BooleanExpression;
 function CallExpression() {
     return (0, ts_parser_combinator_1.doParser)((s, start, end) => {
-        let callee = (0, ts_parser_combinator_1.letter)().manyc1().parse(s);
+        let callee = (0, ts_parser_combinator_1.letter)().or((0, ts_parser_combinator_1.string)("_")).manyc1().parse(s);
         (0, ts_parser_combinator_1.string)("(").parse(s);
         let args = (0, ts_parser_combinator_1.sepBy)(TrimmedExpression(), (0, ts_parser_combinator_1.string)(",")).parse(s);
         (0, ts_parser_combinator_1.string)(")").parse(s);

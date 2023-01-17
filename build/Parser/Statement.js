@@ -149,7 +149,7 @@ function IncludeStatement() {
 exports.IncludeStatement = IncludeStatement;
 function CallStatement() {
     return (0, ts_parser_combinator_1.doParser)((s, start, end) => {
-        let callee = (0, ts_parser_combinator_1.letter)().manyc1().parse(s);
+        let callee = (0, ts_parser_combinator_1.letter)().or((0, ts_parser_combinator_1.string)("_")).manyc1().parse(s);
         (0, ts_parser_combinator_1.string)("(").parse(s);
         let args = (0, ts_parser_combinator_1.sepBy)((0, ts_parser_combinator_1.between)((0, Utils_1.space)(), (0, Utils_1.space)(), (0, Expression_1.Expression)()), (0, ts_parser_combinator_1.string)(",")).parse(s);
         (0, ts_parser_combinator_1.string)(")").parse(s);
