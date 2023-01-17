@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.VariableStorrage = exports.doInterpreter = exports.Interpreter = void 0;
 const types_1 = require("./types");
 class Interpreter {
-    run;
     constructor(run) {
         this.run = run;
     }
@@ -16,7 +15,6 @@ function doInterpreter(func) {
 }
 exports.doInterpreter = doInterpreter;
 class VariableStorrage {
-    storrage;
     constructor() {
         this.storrage = {};
     }

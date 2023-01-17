@@ -11,7 +11,6 @@ class RunTimeError extends Error {
 }
 exports.RunTimeError = RunTimeError;
 class BreakError extends Error {
-    value;
     constructor(value) {
         super();
         this.value = value;
@@ -19,7 +18,6 @@ class BreakError extends Error {
 }
 exports.BreakError = BreakError;
 class ContinueError extends Error {
-    value;
     constructor(value) {
         super();
         this.value = value;
