@@ -161,6 +161,7 @@ export function CallStatement():Parser<ast.CallStatement>{
         string("(").parse(s)
         let args = sepBy(between(space(),space(),Expression()),string(",")).parse(s)
         string(")").parse(s)
+        string(";").optional().parse(s)
 
         return factory.createCallStatement(start(), end(), callee, args)
     })

@@ -153,6 +153,7 @@ function CallStatement() {
         (0, ts_parser_combinator_1.string)("(").parse(s);
         let args = (0, ts_parser_combinator_1.sepBy)((0, ts_parser_combinator_1.between)((0, Utils_1.space)(), (0, Utils_1.space)(), (0, Expression_1.Expression)()), (0, ts_parser_combinator_1.string)(",")).parse(s);
         (0, ts_parser_combinator_1.string)(")").parse(s);
+        (0, ts_parser_combinator_1.string)(";").optional().parse(s);
         return factory.createCallStatement(start(), end(), callee, args);
     });
 }
