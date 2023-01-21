@@ -55,9 +55,7 @@ export function ForStatement():Parser<ast.ForStatement>{
 
         let init = AssignmentExpression().optional().parse(s)
         space().right(string(";")).right(space()).parse(s)
-        console.log("got to boolean")
         let test = BooleanExpression().optional().parse(s)
-        console.log("got after boolean")
         space().right(string(";")).right(space()).parse(s)
 
         let update = UpdateExpression().optional().parse(s)
