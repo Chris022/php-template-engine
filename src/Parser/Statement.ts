@@ -22,9 +22,13 @@ export function IfStatement():Parser<ast.IfStatement>{
             .right(string(":"))
             .right(space())
             .right(string("?>")).parse(s)
-
-        let consequent = TemplateElement().try().many().parse(s)
         
+        let end_if = string("<?php")
+                        .left(space())
+                        .left(
+                            string("endif").or(string("else"))
+                        )
+        let consequent = manyTill(TemplateElement(),end_if).parse(s)
         let alternate = string("<?php")
                             .right(space())
                             .right(string("else"))
@@ -32,7 +36,7 @@ export function IfStatement():Parser<ast.IfStatement>{
                             .right(string(":"))
                             .right(space())
                             .right(string("?>"))
-                            .right(TemplateElement().try().many())
+                            .right(manyTill(TemplateElement(),end_if))
                             .optional()
                             .parse(s)
 
