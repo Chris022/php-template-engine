@@ -27,7 +27,9 @@ export function PHPCode():Parser<ast.PHPCode>{
         let value = Statement().or(BlockStatement()).parse(s)
 
         whitepsace().many().parse(s)
-        string("?>").parse(s)
+        if(s.length() != 0){
+            string("?>").parse(s)
+        }
 
         let end_pos = s.position
         return factory.createPHPCode(start_pos,end_pos,value)
