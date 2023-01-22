@@ -42,7 +42,10 @@ function IfStatement() {
             .right((0, ts_parser_combinator_1.string)(":"))
             .right((0, Utils_1.space)())
             .right((0, ts_parser_combinator_1.string)("?>")).parse(s);
-        let consequent = (0, Document_1.TemplateElement)().many().parse(s);
+        let end_if = (0, ts_parser_combinator_1.string)("<?php")
+            .left((0, Utils_1.space)())
+            .left((0, ts_parser_combinator_1.string)("endif").or((0, ts_parser_combinator_1.string)("else")));
+        let consequent = (0, ts_parser_combinator_1.manyTill)((0, Document_1.TemplateElement)(), end_if).parse(s);
         let alternate = (0, ts_parser_combinator_1.string)("<?php")
             .right((0, Utils_1.space)())
             .right((0, ts_parser_combinator_1.string)("else"))
@@ -50,12 +53,13 @@ function IfStatement() {
             .right((0, ts_parser_combinator_1.string)(":"))
             .right((0, Utils_1.space)())
             .right((0, ts_parser_combinator_1.string)("?>"))
-            .right((0, Document_1.TemplateElement)().many())
-            .optional().parse(s);
+            .right((0, ts_parser_combinator_1.manyTill)((0, Document_1.TemplateElement)(), end_if))
+            .optional()
+            .parse(s);
         (0, ts_parser_combinator_1.string)("<?php").parse(s);
         (0, Utils_1.space)().parse(s);
         (0, ts_parser_combinator_1.string)("endif").parse(s);
-        (0, ts_parser_combinator_1.string)(";").optional().parse(s);
+        (0, ts_parser_combinator_1.string)(";").parse(s);
         if (alternate == undefined)
             return factory.createIfStatement(start(), end(), test_condition, consequent);
         return factory.createIfStatement(start(), end(), test_condition, consequent, alternate);
@@ -70,9 +74,7 @@ function ForStatement() {
             .right((0, Utils_1.space)()).parse(s);
         let init = (0, Expression_1.AssignmentExpression)().optional().parse(s);
         (0, Utils_1.space)().right((0, ts_parser_combinator_1.string)(";")).right((0, Utils_1.space)()).parse(s);
-        console.log("got to boolean");
         let test = (0, Expression_1.BooleanExpression)().optional().parse(s);
-        console.log("got after boolean");
         (0, Utils_1.space)().right((0, ts_parser_combinator_1.string)(";")).right((0, Utils_1.space)()).parse(s);
         let update = (0, Expression_1.UpdateExpression)().optional().parse(s);
         (0, Utils_1.space)()
@@ -81,11 +83,14 @@ function ForStatement() {
             .right((0, ts_parser_combinator_1.string)(":"))
             .right((0, Utils_1.space)())
             .right((0, ts_parser_combinator_1.string)("?>")).parse(s);
-        let body = (0, Document_1.TemplateElement)().many().parse(s);
+        let end_for = (0, ts_parser_combinator_1.string)("<?php")
+            .left((0, Utils_1.space)())
+            .left((0, ts_parser_combinator_1.string)("endfor"));
+        let body = (0, ts_parser_combinator_1.manyTill)((0, Document_1.TemplateElement)(), end_for).parse(s);
         (0, ts_parser_combinator_1.string)("<?php").parse(s);
         (0, Utils_1.space)().parse(s);
         (0, ts_parser_combinator_1.string)("endfor").parse(s);
-        (0, ts_parser_combinator_1.string)(";").optional().parse(s);
+        (0, ts_parser_combinator_1.string)(";").parse(s);
         return factory.createForStatement(start(), end(), body, init != undefined ? init : undefined, test != undefined ? test : undefined, update != undefined ? update : undefined);
     });
 }
@@ -113,11 +118,14 @@ function ForEachStatement() {
             .right((0, ts_parser_combinator_1.string)(":"))
             .right((0, Utils_1.space)())
             .right((0, ts_parser_combinator_1.string)("?>")).parse(s);
-        let body = (0, Document_1.TemplateElement)().many().parse(s);
+        let end_for = (0, ts_parser_combinator_1.string)("<?php")
+            .left((0, Utils_1.space)())
+            .left((0, ts_parser_combinator_1.string)("endforeach"));
+        let body = (0, ts_parser_combinator_1.manyTill)((0, Document_1.TemplateElement)(), end_for).parse(s);
         (0, ts_parser_combinator_1.string)("<?php").parse(s);
         (0, Utils_1.space)().parse(s);
         (0, ts_parser_combinator_1.string)("endforeach").parse(s);
-        (0, ts_parser_combinator_1.string)(";").optional().parse(s);
+        (0, ts_parser_combinator_1.string)(";").parse(s);
         return factory.createForEachStatement(start(), end(), left, key, value, body);
     });
 }
@@ -125,7 +133,7 @@ exports.ForEachStatement = ForEachStatement;
 function BreakStatement() {
     return (0, ts_parser_combinator_1.doParser)((s, start, end) => {
         (0, ts_parser_combinator_1.string)("break").parse(s);
-        (0, ts_parser_combinator_1.string)(";").optional().parse(s);
+        (0, ts_parser_combinator_1.string)(";").parse(s);
         return factory.createBreakStatement(start(), end());
     });
 }
@@ -133,7 +141,7 @@ exports.BreakStatement = BreakStatement;
 function ContinueStatement() {
     return (0, ts_parser_combinator_1.doParser)((s, start, end) => {
         (0, ts_parser_combinator_1.string)("continue").parse(s);
-        (0, ts_parser_combinator_1.string)(";").optional().parse(s);
+        (0, ts_parser_combinator_1.string)(";").parse(s);
         return factory.createContinueStatement(start(), end());
     });
 }
@@ -143,6 +151,7 @@ function IncludeStatement() {
         (0, ts_parser_combinator_1.string)("include").parse(s);
         (0, Utils_1.space)().parse(s);
         let file = (0, Expression_1.StringLiteral)().parse(s);
+        (0, ts_parser_combinator_1.string)(";").parse(s);
         return factory.createIncludeStatement(start(), end(), file);
     });
 }
@@ -153,7 +162,7 @@ function CallStatement() {
         (0, ts_parser_combinator_1.string)("(").parse(s);
         let args = (0, ts_parser_combinator_1.sepBy)((0, ts_parser_combinator_1.between)((0, Utils_1.space)(), (0, Utils_1.space)(), (0, Expression_1.Expression)()), (0, ts_parser_combinator_1.string)(",")).parse(s);
         (0, ts_parser_combinator_1.string)(")").parse(s);
-        (0, ts_parser_combinator_1.string)(";").optional().parse(s);
+        (0, ts_parser_combinator_1.string)(";").parse(s);
         return factory.createCallStatement(start(), end(), callee, args);
     });
 }
@@ -172,7 +181,7 @@ function Statement() {
 exports.Statement = Statement;
 function BlockStatement() {
     return (0, ts_parser_combinator_1.doParser)((s, start, end) => {
-        let statements = Statement().left((0, ts_parser_combinator_1.string)(";")).many().parse(s);
+        let statements = (Statement().left((0, Utils_1.whitepsace)().many())).many1().parse(s);
         return factory.createBlockStatement(start(), end(), statements);
     });
 }

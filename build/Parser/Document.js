@@ -34,7 +34,7 @@ function HTMLCode() {
         let value_array = (0, ts_parser_combinator_1.manyTill)((0, ts_parser_combinator_1.anyChar)(), (0, ts_parser_combinator_1.string)("<?")).parse(s);
         let value = value_array.join("");
         if (value.length == 0)
-            (0, ts_parser_combinator_1.fail)().parse(s);
+            (0, ts_parser_combinator_1.fail)(s, "", "").parse(s);
         return factory.createHTMLCode(start(), end(), value);
     });
 }
@@ -44,9 +44,11 @@ function PHPCode() {
         let start_pos = s.position;
         (0, ts_parser_combinator_1.string)("<?php").parse(s);
         (0, Utils_1.whitepsace)().many1().parse(s);
-        let value = (0, Statement_1.Statement)().or((0, Statement_1.BlockStatement)()).parse(s);
+        let value = (0, Statement_1.BlockStatement)().parse(s);
         (0, Utils_1.whitepsace)().many().parse(s);
-        (0, ts_parser_combinator_1.string)("?>").parse(s);
+        if (s.unconsumed.length != 0) {
+            (0, ts_parser_combinator_1.string)("?>").parse(s);
+        }
         let end_pos = s.position;
         return factory.createPHPCode(start_pos, end_pos, value);
     });

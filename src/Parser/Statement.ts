@@ -72,7 +72,11 @@ export function ForStatement():Parser<ast.ForStatement>{
             .right(space())
             .right(string("?>")).parse(s)
 
-        let body = TemplateElement().many().parse(s)
+        let end_for = string("<?php")
+            .left(space())
+            .left(string("endfor"))
+
+        let body = manyTill(TemplateElement(),end_for).parse(s)
 
         string("<?php").parse(s)
         space().parse(s)
@@ -119,7 +123,11 @@ export function ForEachStatement():Parser<ast.ForEachStatement>{
             .right(space())
             .right(string("?>")).parse(s)
 
-        let body = TemplateElement().many().parse(s)
+        let end_for = string("<?php")
+            .left(space())
+            .left(string("endforeach"))
+
+        let body = manyTill(TemplateElement(),end_for).parse(s)
 
         string("<?php").parse(s)
         space().parse(s)

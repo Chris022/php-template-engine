@@ -9,10 +9,11 @@ import { Expression } from "./Expression"
 
 export function HTMLCode():Parser<ast.HTMLCode>{
     return doParser((s,start,end) => {
-        
         let value_array:string[] = manyTill(anyChar(),string("<?")).parse(s)
         let value:string = value_array.join("")
-        if(value.length == 0) fail().parse(s) 
+
+        if(value.length == 0) fail(s,"","").parse(s)
+
         return factory.createHTMLCode(start(),end(),value)
     })
 }
@@ -23,11 +24,10 @@ export function PHPCode():Parser<ast.PHPCode>{
 
         string("<?php").parse(s)
         whitepsace().many1().parse(s)
-
-        let value = Statement().or(BlockStatement()).parse(s)
-
+        
+        let value = BlockStatement().parse(s)
         whitepsace().many().parse(s)
-        if(s.length() != 0){
+        if(s.unconsumed.length != 0){
             string("?>").parse(s)
         }
 
